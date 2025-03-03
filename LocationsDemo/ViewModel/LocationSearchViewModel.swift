@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-
 import MapKit
 
-class LocationSearchViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
+class LocationSearchViewModel: NSObject, LocationSearchProtocol, MKLocalSearchCompleterDelegate {
     
     @Published var searchQuery = "" {
         didSet {
@@ -17,7 +16,6 @@ class LocationSearchViewModel: NSObject, ObservableObject, MKLocalSearchComplete
         }
     }
     @Published var searchResults: [MKLocalSearchCompletion] = []
-    @Published var selectedCoordinate: CLLocationCoordinate2D?
     @Published var selectedAnnotation: MKPointAnnotation?
 
     private var completer = MKLocalSearchCompleter()
@@ -32,7 +30,6 @@ class LocationSearchViewModel: NSObject, ObservableObject, MKLocalSearchComplete
         completer.queryFragment = searchQuery
     }
     
-    // MARK: - Manejo de resultados de autocompletado
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         DispatchQueue.main.async {
             self.searchResults = completer.results
@@ -43,7 +40,6 @@ class LocationSearchViewModel: NSObject, ObservableObject, MKLocalSearchComplete
         print("Error en autocompletado: \(error.localizedDescription)")
     }
 
-    // MARK: - Buscar ubicación exacta y agregar marcador
     func searchLocation(_ completion: MKLocalSearchCompletion) {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = completion.title
@@ -53,20 +49,16 @@ class LocationSearchViewModel: NSObject, ObservableObject, MKLocalSearchComplete
             guard let coordinate = response?.mapItems.first?.placemark.coordinate else { return }
             
             DispatchQueue.main.async {
-                // Asignar la coordenada seleccionada
-                self?.selectedCoordinate = coordinate
-                
-                // Crear un marcador (MKPointAnnotation)
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
                 annotation.title = completion.title
                 annotation.subtitle = completion.subtitle
                 
                 self?.selectedAnnotation = annotation
-                
-                // Cerrar el teclado automáticamente
+
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
     }
 }
+

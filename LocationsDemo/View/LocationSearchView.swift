@@ -31,7 +31,7 @@ struct LocationSearchView: View {
                 }
             }
             
-            if let _ = viewModel.selectedAnnotation {
+            if viewModel.selectedAnnotation != nil {
                 CustomMapView(viewModel: viewModel)
                     .frame(height: 300)
                     .cornerRadius(10)
@@ -40,6 +40,7 @@ struct LocationSearchView: View {
         }
     }
 }
+
 
 #Preview {
     LocationSearchView()

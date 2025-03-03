@@ -11,7 +11,7 @@ import SwiftUI
 struct LocationsDemoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LocationSearchView()
         }
     }
 }

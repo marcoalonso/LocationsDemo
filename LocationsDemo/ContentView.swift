@@ -22,3 +22,10 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+import SwiftUI
+import MapKit
+
+// MARK: - ViewModel para manejar la búsqueda
+
+

@@ -16,6 +16,7 @@ struct LocationSearchView: View {
             TextField("Buscar ubicación...", text: $viewModel.searchQuery)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+                .accessibilityIdentifier("Buscar ubicación...")
             
             List(viewModel.searchResults, id: \.title) { result in
                 Button(action: {
@@ -29,6 +30,7 @@ struct LocationSearchView: View {
                             .foregroundColor(.gray)
                     }
                 }
+                .accessibilityIdentifier(result.title + ", " + result.subtitle)
             }
             
             if viewModel.selectedAnnotation != nil {
@@ -36,6 +38,7 @@ struct LocationSearchView: View {
                     .frame(height: 300)
                     .cornerRadius(10)
                     .padding()
+                    .accessibilityIdentifier("CustomMapView")
             }
         }
     }

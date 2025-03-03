@@ -62,3 +62,20 @@ class LocationSearchViewModel: NSObject, LocationSearchProtocol, MKLocalSearchCo
     }
 }
 
+struct MockSearchCompletion {
+    let title: String
+    let subtitle: String
+}
+
+extension LocationSearchViewModel {
+    func searchLocationMock(_ completion: MockSearchCompletion) {
+        DispatchQueue.main.async {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: 19.7035, longitude: -101.1926)
+            annotation.title = completion.title
+            annotation.subtitle = completion.subtitle
+            
+            self.selectedAnnotation = annotation
+        }
+    }
+}
